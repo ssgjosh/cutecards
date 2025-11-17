@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run deploy:*)",
+      "Bash(dir /B /A:*)",
+      "Bash(ls:*)",
+      "Bash(for:*)",
+      "Bash(done)",
+      "Bash(cat:*)",
+      "Bash(du:*)",
+      "Bash(awk:*)",
+      "Bash(shopify theme push:*)",
+      "Bash(git init:*)",
+      "Bash(git config:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

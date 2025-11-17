@@ -1,0 +1,89 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product-card",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "cc_size_selector": {
+          "type": "cc_size_selector",
+          "settings": {}
+        },
+        "cc_delivery_promise": {
+          "type": "cc_delivery_promise",
+          "settings": {
+            "text": "Printed and posted within 24 hours"
+          }
+        },
+        "cc_personalize_cta": {
+          "type": "cc_personalize_cta",
+          "settings": {
+            "button_text": "Personalise"
+          }
+        },
+        "cc_add_blank_cta": {
+          "type": "cc_add_blank_cta",
+          "settings": {
+            "button_text": "Add blank"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "cc_size_selector",
+        "cc_delivery_promise",
+        "cc_personalize_cta",
+        "cc_add_blank_cta",
+        "description"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
+        "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products"
+  ]
+}

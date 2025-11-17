@@ -1,0 +1,84 @@
+{% comment %}
+  BreadcrumbList Schema - Centralized
+
+  Outputs JSON-LD for BreadcrumbList showing navigation path.
+  Supports: Product pages, Collection pages, Article pages, and other pages.
+
+  Usage:
+    For products with collection context:
+      {% render 'seo-breadcrumbs-schema', product: product, collection: collection %}
+
+    For collections:
+      {% render 'seo-breadcrumbs-schema', collection: collection %}
+
+    For articles:
+      {% render 'seo-breadcrumbs-schema', article: article, blog: blog %}
+
+    For generic pages:
+      {% render 'seo-breadcrumbs-schema', page: page %}
+{% endcomment %}
+
+{%- liquid
+  assign breadcrumb_items = ''
+  assign position = 1
+-%}
+
+{%- comment -%} Build home breadcrumb (always first) {%- endcomment -%}
+{%- liquid
+  assign home_item = '{"@type":"ListItem","position":' | append: position | append: ',"name":"Home","item":"' | append: shop.url | append: '"}'
+  assign breadcrumb_items = breadcrumb_items | append: home_item
+  assign position = position | plus: 1
+-%}
+
+{%- comment -%} Product page breadcrumbs {%- endcomment -%}
+{%- if product -%}
+  {%- if collection -%}
+    {%- liquid
+      assign position = position | plus: 1
+      assign collection_item = ',{"@type":"ListItem","position":' | append: position | append: ',"name":' | append: collection.title | json | append: ',"item":"' | append: shop.url | append: collection.url | append: '"}'
+      assign breadcrumb_items = breadcrumb_items | append: collection_item
+    -%}
+  {%- endif -%}
+  {%- liquid
+    assign position = position | plus: 1
+    assign product_item = ',{"@type":"ListItem","position":' | append: position | append: ',"name":' | append: product.title | json | append: ',"item":"' | append: shop.url | append: product.url | append: '"}'
+    assign breadcrumb_items = breadcrumb_items | append: product_item
+  -%}
+
+{%- comment -%} Collection page breadcrumbs {%- endcomment -%}
+{%- elsif collection -%}
+  {%- liquid
+    assign position = position | plus: 1
+    assign collection_item = ',{"@type":"ListItem","position":' | append: position | append: ',"name":' | append: collection.title | json | append: ',"item":"' | append: shop.url | append: collection.url | append: '"}'
+    assign breadcrumb_items = breadcrumb_items | append: collection_item
+  -%}
+
+{%- comment -%} Article/Blog page breadcrumbs {%- endcomment -%}
+{%- elsif article and blog -%}
+  {%- liquid
+    assign position = position | plus: 1
+    assign blog_item = ',{"@type":"ListItem","position":' | append: position | append: ',"name":' | append: blog.title | json | append: ',"item":"' | append: shop.url | append: blog.url | append: '"}'
+    assign breadcrumb_items = breadcrumb_items | append: blog_item
+    assign position = position | plus: 1
+    assign article_item = ',{"@type":"ListItem","position":' | append: position | append: ',"name":' | append: article.title | json | append: ',"item":"' | append: shop.url | append: article.url | append: '"}'
+    assign breadcrumb_items = breadcrumb_items | append: article_item
+  -%}
+
+{%- comment -%} Generic page breadcrumbs {%- endcomment -%}
+{%- elsif page -%}
+  {%- liquid
+    assign position = position | plus: 1
+    assign page_item = ',{"@type":"ListItem","position":' | append: position | append: ',"name":' | append: page.title | json | append: ',"item":"' | append: shop.url | append: page.url | append: '"}'
+    assign breadcrumb_items = breadcrumb_items | append: page_item
+  -%}
+{%- endif -%}
+
+{%- if position > 1 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{{ breadcrumb_items }}]
+}
+</script>
+{%- endif -%}

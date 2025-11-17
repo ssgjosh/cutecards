@@ -1,0 +1,84 @@
+{% comment %}
+  Collection Schema - Centralized
+
+  Outputs JSON-LD for CollectionPage with ItemList of products.
+  Include this snippet in collection template sections.
+
+  Usage:
+    {% render 'seo-collection-schema', collection: collection %}
+
+  Optional parameters:
+    products_limit: Maximum number of products to include in ItemList (default: 12)
+
+  Features:
+    - CollectionPage entity
+    - ItemList with product positions, names, URLs, prices
+    - Handles pagination (current page products only)
+{% endcomment %}
+
+{%- liquid
+  assign products_limit = products_limit | default: 12
+  assign product_count = 0
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": "{{ shop.url }}{{ collection.url }}#collectionpage",
+  "name": {{ collection.title | json }},
+  {%- if collection.description != blank -%}
+  "description": {{ collection.description | strip_html | truncate: 500 | json }},
+  {%- endif -%}
+  "url": "{{ shop.url }}{{ collection.url }}",
+  {%- if collection.image -%}
+  "image": {
+    "@type": "ImageObject",
+    "url": "{{ collection.image | image_url: width: 1200 | prepend: 'https:' }}",
+    "width": "1200",
+    "height": "{{ collection.image.height | times: 1200 | divided_by: collection.image.width }}"
+  },
+  {%- endif -%}
+  "inLanguage": {{ request.locale.iso_code | json }},
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": {{ collection.products_count }},
+    "itemListElement": [
+      {%- for product in collection.products limit: products_limit -%}
+        {%- assign product_count = product_count | plus: 1 -%}
+        {%- liquid
+          assign position = product_count
+          if paginate
+            assign page_offset = paginate.current_offset
+            assign position = position | plus: page_offset
+          endif
+          assign product_price = product.price | divided_by: 100.0
+        -%}
+        {
+          "@type": "ListItem",
+          "position": {{ position }},
+          "item": {
+            "@type": "Product",
+            "@id": "{{ shop.url }}{{ product.url }}#product",
+            "name": {{ product.title | json }},
+            "url": "{{ shop.url }}{{ product.url }}",
+            {%- if product.featured_image -%}
+            "image": "{{ product.featured_image | image_url: width: 600 | prepend: 'https:' }}",
+            {%- endif -%}
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": {{ cart.currency.iso_code | json }},
+              "price": "{{ product_price }}",
+              "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+              "url": "{{ shop.url }}{{ product.url }}"
+            }
+          }
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  },
+  "breadcrumb": {
+    "@id": "{{ shop.url }}{{ collection.url }}#breadcrumbs"
+  }
+}
+</script>

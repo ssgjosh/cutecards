@@ -1,0 +1,69 @@
+{% comment %}
+  Organization Schema - Centralized
+
+  Outputs JSON-LD for Organization type following 2025 SEO best practices.
+  Include this snippet globally (typically in header or theme.liquid).
+
+  Usage:
+    {% render 'seo-organization-schema' %}
+
+  Requirements:
+    - settings.logo (optional but recommended)
+    - settings.social_* links in theme settings
+{% endcomment %}
+
+{%- comment -%} Build sameAs array, filtering empty values {%- endcomment -%}
+{%- assign social_links = '' | split: '' -%}
+{%- if settings.social_twitter_link != blank -%}
+  {%- assign social_links = social_links | push: settings.social_twitter_link -%}
+{%- endif -%}
+{%- if settings.social_facebook_link != blank -%}
+  {%- assign social_links = social_links | push: settings.social_facebook_link -%}
+{%- endif -%}
+{%- if settings.social_pinterest_link != blank -%}
+  {%- assign social_links = social_links | push: settings.social_pinterest_link -%}
+{%- endif -%}
+{%- if settings.social_instagram_link != blank -%}
+  {%- assign social_links = social_links | push: settings.social_instagram_link -%}
+{%- endif -%}
+{%- if settings.social_tiktok_link != blank -%}
+  {%- assign social_links = social_links | push: settings.social_tiktok_link -%}
+{%- endif -%}
+{%- if settings.social_tumblr_link != blank -%}
+  {%- assign social_links = social_links | push: settings.social_tumblr_link -%}
+{%- endif -%}
+{%- if settings.social_snapchat_link != blank -%}
+  {%- assign social_links = social_links | push: settings.social_snapchat_link -%}
+{%- endif -%}
+{%- if settings.social_youtube_link != blank -%}
+  {%- assign social_links = social_links | push: settings.social_youtube_link -%}
+{%- endif -%}
+{%- if settings.social_vimeo_link != blank -%}
+  {%- assign social_links = social_links | push: settings.social_vimeo_link -%}
+{%- endif -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "{{ shop.url }}#organization",
+  "name": {{ shop.name | json }},
+  "url": {{ shop.url | json }},
+  {%- if settings.logo -%}
+  "logo": {
+    "@type": "ImageObject",
+    "url": {{ settings.logo | image_url: width: 600 | prepend: "https:" | json }},
+    "width": "600",
+    "height": "{{ settings.logo | image_url: width: 600 | image_tag | split: 'height="' | last | split: '"' | first }}"
+  },
+  {%- endif -%}
+  {%- if social_links.size > 0 -%}
+  "sameAs": {{ social_links | json }},
+  {%- endif -%}
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "Customer Service",
+    "url": "{{ shop.url }}/pages/contact"
+  }
+}
+</script>

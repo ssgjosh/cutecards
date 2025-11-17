@@ -1,0 +1,10 @@
+name = "cute-cards-ai-suggestions"
+main = "ai-suggestions.js"
+compatibility_date = "2024-01-01"
+
+# Your OpenRouter API key (set via: wrangler secret put OPENROUTER_API_KEY)
+[vars]
+# No public vars needed
+
+# Secrets (set these via CLI):
+# wrangler secret put OPENROUTER_API_KEY

@@ -1,0 +1,298 @@
+/* ========================================
+   LAYOUT CSS VARIABLES
+   ======================================== */
+
+:root {
+  /* Layout engine configuration (read by core/layout.js) */
+  --ccc-header-height: 110px;   /* Personaliser header height */
+  --ccc-modal-padding: 24px;     /* Padding around modal content */
+  --ccc-column-gap: 32px;        /* Gap between preview and controls columns */
+  --ccc-card-aspect: 1.43;       /* Card aspect ratio (width/height) */
+
+  /* Dynamic layout values (set by JS, consumed by CSS) */
+  /* --ccc-card-width: calculated by layout engine */
+  /* --ccc-card-height: calculated by layout engine */
+}
+
+/* ========================================
+   MODAL CONTAINER & BACKDROP
+   ======================================== */
+
+.ccc[hidden] {
+  display: none;
+}
+
+.ccc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  pointer-events: auto;
+}
+
+.ccc__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85) !important;
+  cursor: pointer;
+  opacity: 1 !important;
+  z-index: 1;
+  pointer-events: auto;
+  display: block !important;
+  visibility: visible !important;
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ccc__dialog {
+  position: relative;
+  z-index: 2;
+  width: 92%;
+  max-width: 920px;
+  max-height: 92vh;
+  background-color: var(--brutal-white);
+  color: var(--brutal-black) !important;
+  border: var(--brutal-border);
+  border-radius: var(--brutal-radius);
+  box-shadow: var(--brutal-shadow-xl);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  overflow-x: hidden;
+  animation: dialogEnter 0.35s var(--ease-out-expo) forwards;
+  transform-origin: center center;
+  transition: width 0.35s var(--ease-out-expo), max-width 0.35s var(--ease-out-expo), height 0.35s var(--ease-out-expo), opacity 0.2s ease;
+}
+
+.ccc__dialog--personalise {
+  /* Much wider desktop shell */
+  width: min(96vw, 1280px);
+  max-width: 1280px;
+  transition: width 0.35s var(--ease-out-expo), max-width 0.35s var(--ease-out-expo), height 0.35s var(--ease-out-expo);
+}
+
+/* Removed intermediate desktop overrides - keep modal large on all desktop screens */
+
+@media (max-width: 1024px) {
+  .ccc__dialog--personalise {
+    width: 96vw;
+    max-width: 96vw;
+  }
+}
+
+.ccc__dialog--morphing {
+  transition: width 0.35s var(--ease-out-expo), max-width 0.35s var(--ease-out-expo), height 0.35s var(--ease-out-expo);
+}
+
+.ccc__dialog--morphing .ccc__body {
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+}
+
+.ccc__dialog--personalise .ccc__body {
+  opacity: 1;
+  transition: opacity 0.2s ease-out;
+}
+
+@keyframes dialogEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ccc__dialog::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ccc__dialog::-webkit-scrollbar-track {
+  background: rgba(26, 26, 26, 0.05);
+  border-radius: var(--brutal-radius);
+}
+
+.ccc__dialog::-webkit-scrollbar-thumb {
+  background: rgba(26, 26, 26, 0.2);
+  border-radius: var(--brutal-radius);
+  transition: background 0.3s ease;
+}
+
+.ccc__dialog::-webkit-scrollbar-thumb:hover {
+  background: rgba(26, 26, 26, 0.3);
+}
+
+/* ========================================
+   LOADING VIEW - INSTANT FEEDBACK
+   ======================================== */
+
+.ccc__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 3rem;
+}
+
+.ccc__spinner {
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.ccc__spinner-svg {
+  width: 100%;
+  height: 100%;
+  animation: spinnerRotate 1.4s linear infinite;
+}
+
+.ccc__spinner-circle {
+  stroke: rgba(26, 26, 26, 0.2);
+  stroke-linecap: round;
+  animation: spinnerDash 1.4s ease-in-out infinite;
+}
+
+@keyframes spinnerRotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinnerDash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+/* ========================================
+   CLOSE BUTTON - PREMIUM INTERACTION
+   ======================================== */
+
+.ccc__close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  border: var(--brutal-border-thin);
+  background: var(--brutal-yellow);
+  color: var(--brutal-black);
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--brutal-radius);
+  transition: all var(--brutal-transition-base);
+  box-shadow: var(--brutal-shadow-sm);
+  opacity: 0;
+  animation: closeButtonFadeIn 0.3s 0.15s ease-out forwards;
+}
+
+@keyframes closeButtonFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ccc__close:hover {
+  background: var(--brutal-pink);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--brutal-shadow-md);
+}
+
+.ccc__close:active {
+  transform: translate(0, 0);
+  box-shadow: var(--brutal-shadow-sm);
+}
+
+.ccc__close:focus-visible {
+  outline: var(--brutal-border-thin) solid var(--brutal-black);
+  outline-offset: 2px;
+}
+
+.ccc__close svg {
+  width: 2rem;
+  height: 2rem;
+  transition: transform var(--brutal-transition-base);
+}
+
+/* ========================================
+   MODAL BODY & LAYOUT
+   ======================================== */
+
+.ccc__body {
+  padding: 4rem;
+  min-height: 400px;
+}
+
+.ccc__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 650px;
+  color: rgba(26, 26, 26, 0.7);
+  gap: 1.5rem;
+}
+
+.spinner {
+  animation: spinnerRotate 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.spinner__path {
+  stroke: var(--brutal-black);
+  stroke-linecap: round;
+  animation: spinnerDash 1.8s ease-in-out infinite;
+}
+
+@keyframes spinnerRotate {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spinnerDash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}

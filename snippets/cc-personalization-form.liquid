@@ -1,0 +1,84 @@
+{% comment %}
+  Renders personalization fields for Cute Cards (front caption + inside message)
+  Accepts:
+  - block: {Object} Block object with settings
+  - product: {Object} Product object
+  - form_id: {String} Product form ID
+
+  Usage:
+  {% render 'cc-personalization-form', block: block, product: product, form_id: form_id %}
+{% endcomment %}
+
+{%- liquid
+  assign front_enabled = block.settings.enable_front_caption
+  assign front_limit = block.settings.front_caption_limit | default: 40
+  assign inside_enabled = block.settings.enable_inside_message
+  assign inside_limit = block.settings.inside_message_limit | default: 600
+-%}
+
+<fieldset class="cc-fieldset" {{ block.shopify_attributes }} data-cc-personalization data-testid="cc-wrap">
+  <legend class="cc-legend visually-hidden">Personalization</legend>
+
+  {%- if front_enabled -%}
+    <div class="cc-field">
+      <label for="cc-front-{{ form_id }}" class="cc-label">
+        Front caption (optional)
+      </label>
+      <input
+        id="cc-front-{{ form_id }}"
+        class="cc-input field__input"
+        type="text"
+        name="properties[Front Caption]"
+        form="{{ form_id }}"
+        maxlength="{{ front_limit }}"
+        data-cc-front
+        data-cc-limit="{{ front_limit }}"
+        data-testid="cc-front-input"
+        aria-describedby="cc-front-help-{{ form_id }} cc-front-count-{{ form_id }}"
+        autocomplete="off"
+        inputmode="text"
+      >
+      <div id="cc-front-help-{{ form_id }}" class="cc-help">
+        Short line on the front. Max {{ front_limit }} characters.
+      </div>
+      <div id="cc-front-count-{{ form_id }}" class="cc-counter" aria-live="polite" data-cc-front-counter data-testid="cc-front-count">
+        0/{{ front_limit }}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if inside_enabled -%}
+    <div class="cc-field">
+      <label for="cc-inside-{{ form_id }}" class="cc-label">
+        Write your message inside
+        <span class="required" aria-label="required">*</span>
+      </label>
+      <textarea
+        id="cc-inside-{{ form_id }}"
+        class="cc-textarea field__input"
+        name="properties[Inside Message]"
+        form="{{ form_id }}"
+        rows="6"
+        maxlength="{{ inside_limit }}"
+        required
+        data-cc-inside
+        data-cc-limit="{{ inside_limit }}"
+        data-testid="cc-inside-textarea"
+        aria-describedby="cc-inside-help-{{ form_id }} cc-inside-count-{{ form_id }}"
+      ></textarea>
+      <div id="cc-inside-help-{{ form_id }}" class="cc-help">
+        Max {{ inside_limit }} characters. We'll print it as you type it.
+      </div>
+      <div id="cc-inside-count-{{ form_id }}" class="cc-counter" aria-live="polite" data-cc-inside-counter data-testid="cc-inside-count">
+        0/{{ inside_limit }}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%}Hidden fields for future artwork automation{%- endcomment -%}
+  <input type="hidden" name="properties[_artwork_prompt]" form="{{ form_id }}" value="" data-cc-artwork-prompt>
+  <input type="hidden" name="properties[_card_template]" form="{{ form_id }}" value="classic-5x7">
+
+  {%- comment -%}Error message container{%- endcomment -%}
+  <div id="cc-error-{{ form_id }}" class="cc-error" role="alert" aria-live="assertive" hidden data-cc-error data-testid="cc-errors"></div>
+</fieldset>

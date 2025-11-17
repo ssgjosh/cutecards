@@ -1,0 +1,286 @@
+/**
+ * CUTE CARDS - BRUTALIST HEADER & NAVIGATION
+ * Bold, confident header system
+ */
+
+/* ========================================
+   HEADER CONTAINER
+   ======================================== */
+
+.header-wrapper {
+  background: var(--brutal-black) !important;
+  border-bottom: var(--brutal-border-thick) solid var(--brutal-black);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  padding-top: var(--space-2) !important;
+  padding-bottom: var(--space-2) !important;
+}
+
+/* ========================================
+   LOGO
+   ======================================== */
+
+.header__heading-logo {
+  font-family: var(--brutal-font-display) !important;
+  font-weight: 700 !important;
+  font-size: 2.4rem !important;
+  letter-spacing: -0.02em !important;
+  color: var(--brutal-white) !important;
+}
+
+.header__heading-link {
+  text-decoration: none !important;
+  transition: all var(--brutal-transition-base);
+}
+
+.header__heading-link:hover {
+  color: var(--brutal-yellow) !important;
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   NAVIGATION MENU
+   ======================================== */
+
+.header__menu-item {
+  font-family: var(--brutal-font-display) !important;
+  font-weight: 600 !important;
+  font-size: 1.6rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.header__menu-item .header__menu-item-link,
+.list-menu__item .link {
+  color: var(--brutal-white) !important;
+  text-decoration: none !important;
+  padding: var(--space-1) var(--space-2) !important;
+  transition: all var(--brutal-transition-base);
+  border-bottom: 3px solid transparent;
+}
+
+.header__menu-item .header__menu-item-link:hover,
+.list-menu__item .link:hover {
+  color: var(--brutal-yellow) !important;
+  border-bottom-color: var(--brutal-yellow);
+}
+
+.header__menu-item .header__active-menu-item,
+.list-menu__item .link[aria-current="page"] {
+  color: var(--brutal-yellow) !important;
+  border-bottom-color: var(--brutal-yellow);
+  font-weight: 700 !important;
+}
+
+/* ========================================
+   CART ICON & COUNT
+   ======================================== */
+
+.header__icons {
+  gap: var(--space-2);
+}
+
+.header__icon,
+.header__icon--cart {
+  color: var(--brutal-white) !important;
+  padding: var(--space-1) !important;
+  border: var(--brutal-border-thin) solid transparent;
+  border-radius: var(--brutal-radius);
+  transition: all var(--brutal-transition-base);
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__icon:hover {
+  background: var(--brutal-yellow) !important;
+  color: var(--brutal-black) !important;
+  border-color: var(--brutal-black);
+  box-shadow: var(--brutal-shadow-sm);
+  transform: translate(-1px, -1px);
+}
+
+.header__icon--cart .cart-count-bubble {
+  background: var(--brutal-pink) !important;
+  color: var(--brutal-white) !important;
+  font-family: var(--brutal-font-display) !important;
+  font-weight: 700 !important;
+  font-size: 1.2rem !important;
+  border: 2px solid var(--brutal-black);
+  border-radius: var(--brutal-radius);
+  padding: 0.2rem 0.5rem !important;
+  min-width: 20px;
+  box-shadow: var(--brutal-shadow-sm);
+}
+
+/* ========================================
+   SEARCH ICON
+   ======================================== */
+
+.header__search {
+  color: var(--brutal-white) !important;
+}
+
+.modal__toggle {
+  background: transparent !important;
+  border: var(--brutal-border-thin) solid transparent !important;
+  color: var(--brutal-white) !important;
+  transition: all var(--brutal-transition-base);
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.modal__toggle:hover {
+  background: var(--brutal-lime) !important;
+  color: var(--brutal-black) !important;
+  border-color: var(--brutal-black) !important;
+  box-shadow: var(--brutal-shadow-sm);
+}
+
+/* ========================================
+   MOBILE MENU DRAWER
+   ======================================== */
+
+.menu-drawer {
+  background: var(--brutal-white) !important;
+  border-right: var(--brutal-border) !important;
+  box-shadow: 12px 0 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+.menu-drawer__navigation .list-menu {
+  gap: var(--space-1);
+}
+
+.menu-drawer__menu-item {
+  font-family: var(--brutal-font-display) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: var(--space-2) var(--space-3) !important;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  transition: all var(--brutal-transition-base);
+}
+
+.menu-drawer__menu-item:hover {
+  background: var(--brutal-yellow) !important;
+  transform: translateX(4px);
+}
+
+.menu-drawer__menu-item[aria-current="page"] {
+  background: var(--brutal-yellow) !important;
+  font-weight: 700 !important;
+  border-left: var(--brutal-border-thick) solid var(--brutal-black);
+}
+
+.menu-drawer__close-button {
+  background: var(--brutal-white) !important;
+  border: var(--brutal-border) !important;
+  border-radius: var(--brutal-radius) !important;
+  color: var(--brutal-black) !important;
+  box-shadow: var(--brutal-shadow-sm) !important;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.menu-drawer__close-button:hover {
+  background: var(--brutal-pink) !important;
+  color: var(--brutal-white) !important;
+  transform: translate(-1px, -1px);
+  box-shadow: var(--brutal-shadow-md) !important;
+}
+
+/* ========================================
+   ANNOUNCEMENT BAR
+   ======================================== */
+
+.announcement-bar {
+  background: var(--brutal-yellow) !important;
+  color: var(--brutal-black) !important;
+  border-bottom: var(--brutal-border-thin) solid var(--brutal-black);
+  font-family: var(--brutal-font-body) !important;
+  font-weight: 600 !important;
+  padding: var(--space-1) var(--space-2) !important;
+  text-align: center;
+}
+
+.announcement-bar__message {
+  font-size: 1.4rem !important;
+  letter-spacing: 0.02em;
+}
+
+/* ========================================
+   MEGA MENU (if applicable)
+   ======================================== */
+
+.mega-menu {
+  background: var(--brutal-white) !important;
+  border: var(--brutal-border) !important;
+  border-top: none !important;
+  box-shadow: var(--brutal-shadow-lg) !important;
+  border-radius: 0 !important;
+}
+
+.mega-menu__link {
+  font-family: var(--brutal-font-body) !important;
+  font-weight: 600 !important;
+  color: var(--brutal-black) !important;
+  padding: var(--space-1) var(--space-2) !important;
+  transition: all var(--brutal-transition-base);
+  border-left: var(--brutal-border-thin) solid transparent;
+}
+
+.mega-menu__link:hover {
+  background: var(--brutal-yellow) !important;
+  border-left-color: var(--brutal-black);
+  transform: translateX(4px);
+}
+
+.mega-menu__content h3,
+.mega-menu__list .list-menu__item {
+  font-family: var(--brutal-font-display) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  font-size: 1.4rem !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* ========================================
+   STICKY HEADER BEHAVIOR
+   ======================================== */
+
+.shopify-section-header-sticky {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ========================================
+   MOBILE RESPONSIVENESS
+   ======================================== */
+
+@media screen and (max-width: 749px) {
+  .header {
+    padding: var(--space-2) var(--space-2) !important;
+  }
+
+  .header__heading-logo {
+    font-size: 2rem !important;
+  }
+
+  .header__icon,
+  .modal__toggle {
+    min-width: 44px;
+    min-height: 44px;
+    padding: var(--space-1);
+  }
+
+  .menu-drawer__menu-item {
+    padding: var(--space-2) !important;
+    font-size: 1.6rem !important;
+  }
+}

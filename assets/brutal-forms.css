@@ -1,0 +1,431 @@
+/**
+ * CUTE CARDS - BRUTALIST FORMS & SEARCH
+ * Unified form styling across search, newsletter, contact, account forms
+ */
+
+/* ========================================
+   PREDICTIVE SEARCH
+   ======================================== */
+
+.predictive-search,
+.search-modal__content {
+  background: var(--brutal-white) !important;
+  border: var(--brutal-border) !important;
+  border-radius: var(--brutal-radius) !important;
+  box-shadow: var(--brutal-shadow-lg) !important;
+  padding: 0 !important;
+}
+
+.predictive-search__heading,
+.search__heading {
+  font-family: var(--brutal-font-display) !important;
+  font-weight: 700 !important;
+  font-size: 1.6rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--brutal-black) !important;
+  padding: var(--space-2) var(--space-3);
+  background: var(--brutal-yellow);
+  border-bottom: var(--brutal-border-thin) solid var(--brutal-black);
+  margin: 0;
+}
+
+.search-modal {
+  background: rgba(0, 0, 0, 0.85) !important;
+}
+
+.search-modal__form {
+  background: var(--brutal-black) !important;
+  padding: var(--space-3) !important;
+  border-bottom: var(--brutal-border-thick) solid var(--brutal-yellow);
+}
+
+.search__input,
+.search-modal__form .field__input {
+  background: var(--brutal-white) !important;
+  color: var(--brutal-black) !important;
+  border: var(--brutal-border) !important;
+  border-radius: var(--brutal-radius) !important;
+  font-family: var(--brutal-font-body) !important;
+  font-size: 1.8rem !important;
+  font-weight: 600 !important;
+  padding: 1.4rem 1.6rem !important;
+  padding-right: 4.5rem !important;
+  box-shadow: var(--brutal-shadow-sm) !important;
+  min-height: 56px;
+}
+
+.search__input:focus,
+.search-modal__form .field__input:focus {
+  outline: var(--brutal-border-thin) solid var(--brutal-yellow) !important;
+  outline-offset: 2px;
+  border-color: var(--brutal-yellow) !important;
+  box-shadow: var(--brutal-shadow-md) !important;
+}
+
+.search__input::placeholder {
+  color: rgba(26, 26, 26, 0.5);
+  font-weight: 500;
+}
+
+.search__button,
+.search-modal__form button[type="submit"] {
+  background: var(--brutal-yellow) !important;
+  color: var(--brutal-black) !important;
+  border: var(--brutal-border-thin) solid var(--brutal-black) !important;
+  border-radius: var(--brutal-radius) !important;
+  width: 48px;
+  height: 48px;
+  padding: 0 !important;
+  box-shadow: var(--brutal-shadow-sm) !important;
+  transition: all var(--brutal-transition-base);
+}
+
+.search__button:hover {
+  background: var(--brutal-lime) !important;
+  transform: translate(-1px, -1px) rotate(5deg);
+  box-shadow: var(--brutal-shadow-md) !important;
+}
+
+/* Search results */
+.predictive-search__item {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  padding: var(--space-2) var(--space-3) !important;
+  transition: all var(--brutal-transition-base);
+}
+
+.predictive-search__item:hover {
+  background: var(--brutal-yellow);
+  transform: translateX(4px);
+}
+
+.predictive-search__item-heading {
+  font-family: var(--brutal-font-display) !important;
+  font-weight: 700 !important;
+  font-size: 1.6rem !important;
+  color: var(--brutal-black) !important;
+}
+
+.predictive-search__item-vendor,
+.predictive-search__item-price {
+  font-family: var(--brutal-font-body) !important;
+  font-weight: 600 !important;
+  color: rgba(26, 26, 26, 0.7);
+}
+
+/* ========================================
+   CONTACT FORM
+   ======================================== */
+
+.contact-form,
+.customer,
+.addresses {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-form .field,
+.customer .field,
+.addresses .field {
+  margin-bottom: var(--space-3);
+}
+
+.field__label,
+.contact-form label,
+.customer label {
+  font-family: var(--brutal-font-display) !important;
+  font-weight: 700 !important;
+  font-size: 1.4rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--brutal-black) !important;
+  margin-bottom: var(--space-1);
+  display: block;
+}
+
+.field__input,
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"],
+.contact-form textarea,
+.customer input[type="text"],
+.customer input[type="email"],
+.customer input[type="password"],
+.addresses input[type="text"] {
+  background: var(--brutal-white) !important;
+  color: var(--brutal-black) !important;
+  border: var(--brutal-border) !important;
+  border-radius: var(--brutal-radius) !important;
+  font-family: var(--brutal-font-body) !important;
+  font-size: 1.5rem !important;
+  font-weight: 500 !important;
+  padding: 1.2rem 1.4rem !important;
+  box-shadow: var(--brutal-shadow-sm) !important;
+  transition: all var(--brutal-transition-base);
+  width: 100%;
+  min-height: 48px;
+}
+
+.field__input:hover,
+.contact-form input:hover,
+.contact-form textarea:hover,
+.customer input:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--brutal-shadow-md) !important;
+}
+
+.field__input:focus,
+.contact-form input:focus,
+.contact-form textarea:focus,
+.customer input:focus,
+.addresses input:focus {
+  outline: var(--brutal-border-thin) solid var(--brutal-black) !important;
+  outline-offset: 2px;
+  border-color: var(--brutal-black) !important;
+  box-shadow: var(--brutal-shadow-md) !important;
+}
+
+textarea.field__input,
+.contact-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Form errors */
+.field__error,
+.form__message,
+.errors {
+  background: rgba(255, 0, 110, 0.1) !important;
+  border: var(--brutal-border-thin) solid var(--brutal-pink) !important;
+  border-radius: var(--brutal-radius) !important;
+  padding: var(--space-2) !important;
+  margin-top: var(--space-1);
+  font-family: var(--brutal-font-body) !important;
+  font-weight: 600 !important;
+  color: var(--brutal-pink) !important;
+  animation: brutShake 0.4s ease-in-out;
+}
+
+.field__input--error {
+  border-color: var(--brutal-pink) !important;
+  box-shadow: 0 0 0 2px rgba(255, 0, 110, 0.2) !important;
+}
+
+/* Success messages */
+.form__message--success,
+.form-message--success {
+  background: rgba(6, 255, 165, 0.1) !important;
+  border: var(--brutal-border-thin) solid var(--brutal-lime) !important;
+  border-radius: var(--brutal-radius) !important;
+  padding: var(--space-2) !important;
+  font-family: var(--brutal-font-body) !important;
+  font-weight: 600 !important;
+  color: var(--brutal-black) !important;
+}
+
+/* ========================================
+   NEWSLETTER FORM
+   ======================================== */
+
+.newsletter-form {
+  display: flex;
+  gap: var(--space-1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.newsletter-form__field-wrapper {
+  flex: 1;
+}
+
+.newsletter-form__field-wrapper .field__input {
+  background: var(--brutal-white) !important;
+  border: var(--brutal-border) !important;
+  border-radius: var(--brutal-radius) !important;
+  font-family: var(--brutal-font-body) !important;
+  font-size: 1.5rem !important;
+  font-weight: 500 !important;
+  padding: 1.2rem 1.4rem !important;
+  box-shadow: var(--brutal-shadow-sm) !important;
+  min-height: 48px;
+}
+
+.newsletter-form__field-wrapper .field__input:focus {
+  outline: var(--brutal-border-thin) solid var(--brutal-lime) !important;
+  outline-offset: 2px;
+  border-color: var(--brutal-lime) !important;
+}
+
+.newsletter-form__button {
+  background: var(--brutal-lime) !important;
+  color: var(--brutal-black) !important;
+  border: var(--brutal-border) !important;
+  border-radius: var(--brutal-radius) !important;
+  font-family: var(--brutal-font-display) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 1.2rem 2rem !important;
+  box-shadow: var(--brutal-shadow-md) !important;
+  transition: all var(--brutal-transition-base);
+  white-space: nowrap;
+  min-height: 48px;
+}
+
+.newsletter-form__button:hover {
+  background: var(--brutal-yellow) !important;
+  transform: translate(-2px, -2px);
+  box-shadow: var(--brutal-shadow-lg) !important;
+}
+
+/* ========================================
+   SELECT DROPDOWNS
+   ======================================== */
+
+select.field__input,
+.select__select {
+  background: var(--brutal-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%231A1A1A'/%3E%3C/svg%3E") no-repeat right 1rem center !important;
+  background-size: 24px !important;
+  padding-right: 4rem !important;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+select.field__input:hover,
+.select__select:hover {
+  background-color: rgba(255, 214, 0, 0.1) !important;
+}
+
+/* ========================================
+   CHECKBOXES & RADIOS
+   ======================================== */
+
+.field__checkbox,
+.field__radio {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: 20px !important;
+  height: 20px !important;
+  border: var(--brutal-border-thin) solid var(--brutal-black) !important;
+  border-radius: var(--brutal-radius-sm) !important;
+  cursor: pointer;
+  accent-color: var(--brutal-black);
+  transition: all var(--brutal-transition-fast);
+}
+
+input[type="radio"] {
+  border-radius: 50% !important;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background: var(--brutal-black) !important;
+  transform: scale(1.1);
+}
+
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+  outline: var(--brutal-border-thin) solid var(--brutal-black) !important;
+  outline-offset: 2px;
+}
+
+.field__checkbox label,
+.field__radio label {
+  font-family: var(--brutal-font-body) !important;
+  font-weight: 600 !important;
+  font-size: 1.5rem !important;
+  color: var(--brutal-black) !important;
+  cursor: pointer;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+/* ========================================
+   ACCOUNT & LOGIN FORMS
+   ======================================== */
+
+.customer__account-container,
+.login,
+.register {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: var(--space-4);
+  background: var(--brutal-white);
+  border: var(--brutal-border);
+  border-radius: var(--brutal-radius);
+  box-shadow: var(--brutal-shadow-lg);
+}
+
+.customer h1,
+.customer h2 {
+  font-family: var(--brutal-font-display) !important;
+  font-weight: 700 !important;
+  font-size: 2.4rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--brutal-black) !important;
+  margin-bottom: var(--space-3);
+  text-align: center;
+  border-bottom: var(--brutal-border-thin) solid var(--brutal-black);
+  padding-bottom: var(--space-2);
+}
+
+.customer .button {
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+.customer a:not(.button) {
+  color: var(--brutal-black) !important;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+  transition: all var(--brutal-transition-base);
+}
+
+.customer a:not(.button):hover {
+  color: var(--brutal-pink) !important;
+  text-decoration-thickness: 3px;
+}
+
+/* ========================================
+   MOBILE RESPONSIVENESS
+   ======================================== */
+
+@media screen and (max-width: 749px) {
+  .search__input,
+  .search-modal__form .field__input {
+    font-size: 1.6rem !important;
+    padding: 1.2rem 1.4rem !important;
+    min-height: 52px;
+  }
+
+  .search__button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+  }
+
+  .newsletter-form__button {
+    width: 100%;
+  }
+
+  .contact-form,
+  .customer__account-container,
+  .login,
+  .register {
+    padding: var(--space-3);
+  }
+}

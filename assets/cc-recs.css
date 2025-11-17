@@ -1,0 +1,512 @@
+/**
+ * CC Recommendations Rail Styles
+ * Horizontal scrolling product rail for modal recommendations
+ */
+
+/* ============================================================================
+   Variables
+   ============================================================================ */
+
+:root {
+  --cc-recs-card-width: 200px;
+  --cc-recs-gap: 1.6rem;
+  --cc-recs-radius: 0px; /* Angular for neobrutalism */
+  --cc-recs-transition: all 0.15s ease-out; /* Faster, instant feel */
+  --cc-recs-border: 3px solid #1A1A1A; /* Thick borders */
+  --cc-recs-shadow: 4px 4px 0 #1A1A1A; /* Hard shadow */
+}
+
+/* ============================================================================
+   Container & Layout
+   ============================================================================ */
+
+.cc-recs {
+  width: 100%;
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(var(--color-foreground), 0.1);
+}
+
+.cc-recs__header {
+  margin-bottom: 2rem;
+}
+
+.cc-recs__title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 0 1.2rem 0;
+  letter-spacing: -0.02em;
+  color: rgb(var(--color-foreground));
+}
+
+/* ============================================================================
+   Pivot Chips
+   ============================================================================ */
+
+.cc-recs__pivots {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.cc-recs__pivot {
+  padding: 0.8rem 1.6rem;
+  border: var(--cc-recs-border); /* Thick border */
+  border-radius: var(--cc-recs-radius); /* Angular */
+  background: #FFFFFF;
+  color: #1A1A1A;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: var(--cc-recs-transition);
+  white-space: nowrap;
+  box-shadow: var(--cc-recs-shadow); /* Hard shadow */
+}
+
+.cc-recs__pivot:hover {
+  border-color: #1A1A1A;
+  background: #FFD600; /* Yellow on hover */
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #1A1A1A; /* Enhanced shadow */
+}
+
+.cc-recs__pivot--active {
+  border-color: #1A1A1A;
+  background: #FF006E; /* Pink when active */
+  color: #FFFFFF;
+  transform: rotate(1deg); /* Slight rotation */
+  box-shadow: 6px 6px 0 #1A1A1A;
+}
+
+.cc-recs__pivot--active:hover {
+  background: #FF006E;
+  transform: translate(-1px, -1px) rotate(1deg);
+}
+
+/* ============================================================================
+   Product List (Horizontal Scroll)
+   ============================================================================ */
+
+.cc-recs__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: var(--cc-recs-gap);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.cc-recs__list::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* Snap scroll on mobile */
+@media (max-width: 749px) {
+  .cc-recs__list {
+    scroll-snap-type: x mandatory;
+    gap: 1.2rem;
+  }
+
+  .cc-recs__item {
+    scroll-snap-align: start;
+  }
+}
+
+.cc-recs__item {
+  flex: 0 0 var(--cc-recs-card-width);
+  min-width: var(--cc-recs-card-width);
+}
+
+/* ============================================================================
+   Product Card
+   ============================================================================ */
+
+.cc-recs__card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #FFFFFF;
+  border: var(--cc-recs-border); /* Thick border */
+  border-radius: var(--cc-recs-radius); /* Angular */
+  overflow: hidden;
+  transition: var(--cc-recs-transition);
+  box-shadow: var(--cc-recs-shadow); /* Hard shadow */
+}
+
+.cc-recs__card:hover {
+  border-color: #1A1A1A;
+  box-shadow: 6px 6px 0 #1A1A1A; /* Enhanced shadow */
+  transform: translate(-2px, -2px) rotate(1deg); /* Lift + rotation */
+}
+
+/* Image */
+.cc-recs__image-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: rgba(var(--color-foreground), 0.04);
+  cursor: pointer;
+}
+
+.cc-recs__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cc-recs__image-wrapper:hover .cc-recs__image {
+  transform: scale(1.08);
+}
+
+.cc-recs__image--placeholder {
+  width: 100%;
+  height: 100%;
+  fill: rgba(var(--color-foreground), 0.1);
+}
+
+/* Info Section */
+.cc-recs__info {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  flex: 1;
+}
+
+.cc-recs__title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: rgb(var(--color-foreground));
+}
+
+.cc-recs__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cc-recs__title a:hover {
+  color: rgb(var(--color-base-accent-1));
+}
+
+.cc-recs__price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-recs__price-text {
+  display: block;
+}
+
+/* CTA Button */
+.cc-recs__cta {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid rgba(var(--color-foreground), 0.15);
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+  transition: var(--cc-recs-transition);
+  margin-top: auto;
+}
+
+.cc-recs__cta:hover {
+  border-color: rgb(var(--color-base-accent-1));
+  background: rgb(var(--color-base-accent-1));
+  color: rgb(var(--color-background));
+  transform: translateY(-2px);
+}
+
+.cc-recs__cta:active {
+  transform: translateY(0);
+}
+
+/* ============================================================================
+   Loading Skeleton
+   ============================================================================ */
+
+.cc-recs__loading {
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.cc-recs__skeleton-grid {
+  display: flex;
+  gap: var(--cc-recs-gap);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cc-recs__skeleton-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.cc-recs__skeleton-card {
+  flex: 0 0 var(--cc-recs-card-width);
+  min-width: var(--cc-recs-card-width);
+  border: 1px solid rgba(var(--color-foreground), 0.08);
+  border-radius: var(--cc-recs-radius);
+  overflow: hidden;
+  background: rgba(var(--color-foreground), 0.02);
+}
+
+.cc-recs__skeleton-image,
+.cc-recs__skeleton-title,
+.cc-recs__skeleton-price {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--color-foreground), 0.08) 0%,
+    rgba(var(--color-foreground), 0.12) 50%,
+    rgba(var(--color-foreground), 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.cc-recs__skeleton-image {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.cc-recs__skeleton-title {
+  margin: 1.2rem 1.2rem 0.8rem 1.2rem;
+  height: 1.4rem;
+  border-radius: 4px;
+}
+
+.cc-recs__skeleton-price {
+  margin: 0 1.2rem 1.2rem 1.2rem;
+  height: 1.5rem;
+  width: 60%;
+  border-radius: 4px;
+}
+
+/* ============================================================================
+   Empty & Error States
+   ============================================================================ */
+
+.cc-recs__empty,
+.cc-recs__error {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: rgba(var(--color-foreground), 0.6);
+  font-size: 1.4rem;
+}
+
+.cc-recs__empty-message {
+  margin: 0 0 1.2rem 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: rgba(26, 26, 26, 0.75);
+}
+
+.cc-recs__empty-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.6rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--brutal-black);
+  background: var(--brutal-white);
+  border: 2px solid var(--brutal-black);
+  border-radius: var(--brutal-radius);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 3px 3px 0 var(--brutal-black);
+}
+
+.cc-recs__empty-link:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--brutal-black);
+  background: var(--brutal-lime);
+}
+
+.cc-recs--empty {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* ============================================================================
+   Mobile Optimizations
+   ============================================================================ */
+
+@media (max-width: 749px) {
+  .cc-recs {
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+  }
+
+  .cc-recs__title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .cc-recs__pivots {
+    gap: 0.6rem;
+  }
+
+  .cc-recs__pivot {
+    padding: 0.7rem 1.4rem;
+    font-size: 1.2rem;
+  }
+
+  :root {
+    --cc-recs-card-width: 180px;
+    --cc-recs-gap: 1.2rem;
+  }
+
+  .cc-recs__info {
+    padding: 1rem;
+    gap: 0.6rem;
+  }
+
+  .cc-recs__title {
+    font-size: 1.3rem;
+  }
+
+  .cc-recs__price {
+    font-size: 1.4rem;
+  }
+
+  .cc-recs__cta {
+    padding: 0.9rem 1rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* Small mobile (narrow screens) */
+@media (max-width: 480px) {
+  :root {
+    --cc-recs-card-width: 160px;
+    --cc-recs-gap: 1rem;
+  }
+
+  .cc-recs__header {
+    margin-bottom: 1.5rem;
+  }
+
+  .cc-recs__title {
+    font-size: 1.6rem;
+  }
+}
+
+/* ============================================================================
+   Desktop Enhancements
+   ============================================================================ */
+
+@media (min-width: 750px) {
+  /* Add subtle fade at edges to indicate scrollability */
+  .cc-recs {
+    position: relative;
+  }
+
+  .cc-recs::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    background: linear-gradient(to left, rgb(var(--color-background)), transparent);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .cc-recs:hover::after {
+    opacity: 1;
+  }
+
+  /* Smoother hover effects */
+  .cc-recs__card {
+    will-change: transform;
+  }
+
+  /* Arrow key navigation hint */
+  .cc-recs__list:focus-within {
+    outline: 2px solid rgb(var(--color-base-accent-1));
+    outline-offset: 4px;
+    border-radius: var(--cc-recs-radius);
+  }
+}
+
+/* ============================================================================
+   Print Styles
+   ============================================================================ */
+
+@media print {
+  .cc-recs {
+    display: none;
+  }
+}
+
+/* ============================================================================
+   Reduced Motion
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-recs__pivot,
+  .cc-recs__card,
+  .cc-recs__image,
+  .cc-recs__cta {
+    transition: none;
+    animation: none;
+  }
+
+  .cc-recs__list {
+    scroll-behavior: auto;
+  }
+}
+
+/* ============================================================================
+   High Contrast Mode
+   ============================================================================ */
+
+@media (prefers-contrast: high) {
+  .cc-recs__card {
+    border-width: 2px;
+  }
+
+  .cc-recs__pivot {
+    border-width: 2px;
+  }
+
+  .cc-recs__pivot--active {
+    border-width: 3px;
+  }
+}

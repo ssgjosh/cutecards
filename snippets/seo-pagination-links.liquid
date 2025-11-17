@@ -1,0 +1,25 @@
+{% comment %}
+  Pagination Links for SEO - Centralized
+
+  Outputs rel=next and rel=prev links for paginated pages.
+  Include this snippet in theme.liquid <head>.
+
+  Usage:
+    {% render 'seo-pagination-links' %}
+
+  Requirements:
+    - Only outputs when paginate object is available (collection/blog pages)
+    - Uses canonical_url as base and appends ?page= parameter
+
+  Note: This snippet is called from theme.liquid which has access to
+  the paginate object when it's been initialized in collection/blog templates.
+{% endcomment %}
+
+{%- if paginate -%}
+  {%- if paginate.previous -%}
+    <link rel="prev" href="{{ paginate.previous.url }}">
+  {%- endif -%}
+  {%- if paginate.next -%}
+    <link rel="next" href="{{ paginate.next.url }}">
+  {%- endif -%}
+{%- endif -%}

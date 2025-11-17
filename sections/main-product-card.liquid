@@ -1,0 +1,665 @@
+<product-info
+  id="MainProduct-{{ section.id }}"
+  class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}"
+  data-section="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-update-url="true"
+  data-url="{{ product.url }}"
+  {% if section.settings.image_zoom == 'hover' %}
+    data-zoom-on-hover
+  {% endif %}
+>
+  {%- comment -%} CSS Assets {%- endcomment -%}
+  {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+  {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  {{ 'component-slider.css' | asset_url | stylesheet_tag }}
+  {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+  {{ 'brutal-product.css' | asset_url | stylesheet_tag }}
+
+  {%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+
+  {%- comment -%} JS Assets {%- endcomment -%}
+  <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+  {% if section.settings.image_zoom == 'hover' %}
+    <script id="EnableZoomOnHover-main" src="{{ 'magnify.js' | asset_url }}" defer="defer"></script>
+  {% endif %}
+  {%- if request.design_mode -%}
+    <script src="{{ 'theme-editor.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
+
+  {%- comment -%} 3D Model Support {%- endcomment -%}
+  {%- assign first_3d_model = product.media | where: 'media_type', 'model' | first -%}
+  {%- if first_3d_model -%}
+    {{ 'component-product-model.css' | asset_url | stylesheet_tag }}
+    <link
+      id="ModelViewerStyle"
+      rel="stylesheet"
+      href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css"
+      media="print"
+      onload="this.media='all'"
+    >
+  {%- endif -%}
+
+  {%- assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' -%}
+
+  <div class="page-width">
+    <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
+
+      {%- comment -%} LEFT COLUMN: Media Gallery {%- endcomment -%}
+      <div class="grid__item product__media-wrapper">
+        {% render 'product-media-gallery', variant_images: variant_images %}
+      </div>
+
+      {%- comment -%} RIGHT COLUMN: CC Choice UI {%- endcomment -%}
+      <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        <section
+          id="ProductInfo-{{ section.id }}"
+          class="product__info-container{% if section.settings.enable_sticky_info %} product__column-sticky{% endif %}"
+        >
+          {%- assign product_form_id = 'product-form-' | append: section.id -%}
+
+          {%- comment -%} Render Blocks {%- endcomment -%}
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+
+              {%- when 'title' -%}
+                <h1 class="product__title" {{ block.shopify_attributes }}>
+                  {{ product.title | escape }}
+                </h1>
+
+              {%- when 'price' -%}
+                <div class="no-js-hidden" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                  {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'price--large' -%}
+                </div>
+
+              {%- when 'cc_size_selector' -%}
+                <div class="cc-pdp-sizes" {{ block.shopify_attributes }}>
+                  <h3 class="cc-pdp-section-title">Select size</h3>
+                  <div class="cc-pdp-size-grid">
+                    {%- for variant in product.variants -%}
+                      {%- assign size_label = variant.title | split: '(' | first | strip -%}
+                      {%- assign size_lower = size_label | downcase -%}
+
+                      {%- comment -%} Determine badge {%- endcomment -%}
+                      {%- assign badge = '' -%}
+                      {%- if size_lower contains 'large' or size_lower contains 'big' -%}
+                        {%- assign badge = 'Most Popular' -%}
+                      {%- elsif size_lower contains 'giant' or size_lower contains 'xl' -%}
+                        {%- assign badge = 'Makes a Statement' -%}
+                      {%- elsif size_lower contains 'standard' -%}
+                        {%- assign badge = 'Perfect Size' -%}
+                      {%- elsif size_lower contains 'small' or size_lower contains 'compact' -%}
+                        {%- assign badge = 'Sweet & Simple' -%}
+                      {%- endif -%}
+
+                      {%- comment -%} Determine dimensions {%- endcomment -%}
+                      {%- assign dimensions = '' -%}
+                      {%- if size_lower contains 'standard' or size_lower contains 'a5' -%}
+                        {%- assign dimensions = '148 × 210mm (5.8" × 8.3")' -%}
+                      {%- elsif size_lower contains 'large' or size_lower contains 'a4' -%}
+                        {%- assign dimensions = '210 × 297mm (8.3" × 11.7")' -%}
+                      {%- elsif size_lower contains 'giant' -%}
+                        {%- assign dimensions = '293 × 419mm (11.5" × 16.5")' -%}
+                      {%- elsif size_lower contains 'small' or size_lower contains 'a6' -%}
+                        {%- assign dimensions = '105 × 148mm (4.1" × 5.8")' -%}
+                      {%- endif -%}
+
+                      <label class="cc-pdp-size-option {% unless variant.available %}cc-pdp-size-option--disabled{% endunless %}">
+                        <input
+                          type="radio"
+                          name="variant_id"
+                          value="{{ variant.id }}"
+                          data-price="{{ variant.price }}"
+                          data-size-name="{{ size_label }}"
+                          {% if forloop.first %}checked{% endif %}
+                          {% unless variant.available %}disabled{% endunless %}
+                        >
+                        <div class="cc-pdp-size-content">
+                          <span class="cc-pdp-size-label">{{ size_label }}</span>
+                          {%- if badge != '' -%}
+                            <span class="cc-pdp-size-badge">{{ badge }}</span>
+                          {%- endif -%}
+                          {%- if dimensions != '' -%}
+                            <span class="cc-pdp-size-dimensions">{{ dimensions }}</span>
+                          {%- endif -%}
+                          <span class="cc-pdp-size-price">{{ variant.price | money }}</span>
+                        </div>
+                        {%- unless variant.available -%}
+                          <span class="cc-pdp-size-unavailable">Out of stock</span>
+                        {%- endunless -%}
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </div>
+
+              {%- when 'cc_delivery_promise' -%}
+                <div class="cc-pdp-delivery-promise" {{ block.shopify_attributes }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span>{{ block.settings.text }}</span>
+                </div>
+
+              {%- when 'cc_personalize_cta' -%}
+                <button
+                  type="button"
+                  class="button button--primary button--full-width cc-pdp-personalise-btn"
+                  data-cc-open-modal
+                  data-cc-handle="{{ product.handle }}"
+                  data-cc-variant-skus='{
+                    {%- for variant in product.variants -%}
+                      "{{ variant.id }}": {
+                        "sku_bla": {{ variant.metafields.custom.sku_bla | json }},
+                        "sku_dir": {{ variant.metafields.custom.sku_dir | json }}
+                      }{% unless forloop.last %},{% endunless %}
+                    {%- endfor -%}
+                  }'
+                  {{ block.shopify_attributes }}
+                >
+                  {{ block.settings.button_text }} — <span data-cc-price>{{ product.selected_or_first_available_variant.price | money }}</span>
+                </button>
+
+              {%- when 'cc_add_blank_cta' -%}
+                <button
+                  type="button"
+                  class="button button--secondary button--full-width cc-pdp-blank-btn"
+                  data-cc-add-blank
+                  {{ block.shopify_attributes }}
+                >
+                  {{ block.settings.button_text }}
+                </button>
+
+              {%- when 'description' -%}
+                {%- if product.description != blank -%}
+                  <div class="product__description rte" {{ block.shopify_attributes }}>
+                    {{ product.description }}
+                  </div>
+                {%- endif -%}
+
+              {%- when '@app' -%}
+                {% render block %}
+
+            {%- endcase -%}
+          {%- endfor -%}
+
+        </section>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} PDP Modal Integration Script {%- endcomment -%}
+  <script>
+  (function() {
+    'use strict';
+
+    const pdpPersonaliseBtn = document.querySelector('[data-cc-open-modal]');
+    const blankBtn = document.querySelector('[data-cc-add-blank]');
+
+    if (!pdpPersonaliseBtn) {
+      console.warn('[CC PDP] Personalise button not found');
+      return;
+    }
+
+    // Update price when size changes
+    const sizeInputs = document.querySelectorAll('input[name="variant_id"]');
+    const priceDisplay = pdpPersonaliseBtn.querySelector('[data-cc-price]');
+
+    sizeInputs.forEach(input => {
+      input.addEventListener('change', (e) => {
+        const price = parseInt(e.target.dataset.price, 10);
+        if (priceDisplay && typeof Shopify !== 'undefined' && Shopify.formatMoney) {
+          priceDisplay.textContent = Shopify.formatMoney(price);
+        }
+      });
+    });
+
+    // Launch modal on click
+    pdpPersonaliseBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const modal = document.querySelector('cc-choice-modal');
+      if (!modal) {
+        console.error('[CC PDP] Modal element not found - falling back to page navigation');
+        window.location.href = window.location.pathname;
+        return;
+      }
+
+      const handle = pdpPersonaliseBtn.dataset.ccHandle;
+      const variantSkus = JSON.parse(pdpPersonaliseBtn.dataset.ccVariantSkus || '{}');
+
+      // Get selected variant ID
+      const selectedInput = document.querySelector('input[name="variant_id"]:checked');
+      const selectedVariantId = selectedInput ? parseInt(selectedInput.value, 10) : null;
+
+      // Open modal (reuses existing cc-choice.js logic)
+      modal.show({
+        handle: handle,
+        productUrl: window.location.pathname,
+        opener: pdpPersonaliseBtn,
+        fromRecs: false,
+        preselectedVariantId: selectedVariantId
+      });
+
+      // Track event
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'cc_pdp_personalise_click', {
+          product_handle: handle,
+          variant_id: selectedVariantId
+        });
+      }
+      if (typeof window.ShopifyAnalytics !== 'undefined') {
+        window.ShopifyAnalytics.lib.track('cc_pdp_personalise_click', {
+          product_handle: handle,
+          variant_id: selectedVariantId
+        });
+      }
+    });
+
+    // Add blank handler
+    if (blankBtn) {
+      blankBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        const selectedInput = document.querySelector('input[name="variant_id"]:checked');
+        if (!selectedInput) {
+          alert('Please select a size');
+          return;
+        }
+
+        const variantId = parseInt(selectedInput.value, 10);
+        const skus = JSON.parse(pdpPersonaliseBtn.dataset.ccVariantSkus || '{}');
+        const variantSku = skus[variantId];
+
+        // Build cart payload (matches modal logic)
+        const payload = {
+          items: [{
+            id: variantId,
+            quantity: 1,
+            properties: {
+              'leave_blank': 'Yes',
+              '_prodigi_sku': variantSku?.sku_bla || '',
+              'Delivery Method': 'Mail2Me'
+            }
+          }]
+        };
+
+        // Track event
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'cc_pdp_add_blank_click', {
+            product_handle: pdpPersonaliseBtn.dataset.ccHandle,
+            variant_id: variantId
+          });
+        }
+        if (typeof window.ShopifyAnalytics !== 'undefined') {
+          window.ShopifyAnalytics.lib.track('cc_pdp_add_blank_click', {
+            product_handle: pdpPersonaliseBtn.dataset.ccHandle,
+            variant_id: variantId
+          });
+        }
+
+        // Add to cart
+        try {
+          blankBtn.disabled = true;
+          blankBtn.textContent = 'Adding...';
+
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.description || 'Cart add failed');
+          }
+
+          // Trigger cart drawer (Dawn theme)
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+
+          // Also try to open cart drawer if it exists
+          const cartDrawer = document.querySelector('cart-drawer');
+          if (cartDrawer && typeof cartDrawer.open === 'function') {
+            cartDrawer.open();
+          }
+
+          // Track success
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'cc_add_blank_success', {
+              product_handle: pdpPersonaliseBtn.dataset.ccHandle,
+              variant_id: variantId
+            });
+          }
+          if (typeof window.ShopifyAnalytics !== 'undefined') {
+            window.ShopifyAnalytics.lib.track('cc_add_blank_success', {
+              product_handle: pdpPersonaliseBtn.dataset.ccHandle,
+              variant_id: variantId
+            });
+          }
+
+        } catch (err) {
+          console.error('[CC PDP] Add blank failed:', err);
+          alert('Failed to add to cart. Please try again.');
+        } finally {
+          blankBtn.disabled = false;
+          blankBtn.textContent = '{{ section.blocks | where: "type", "cc_add_blank_cta" | first | default: block | map: "settings" | map: "button_text" | first | default: "Add blank" }}';
+        }
+      });
+    }
+  })();
+  </script>
+
+  {%- comment -%} SEO Schema - Canonical Product + Breadcrumbs {%- endcomment -%}
+  {% render 'seo-product-schema', product: product, collection: collection %}
+  {% render 'seo-breadcrumbs-schema', product: product, collection: collection %}
+
+</product-info>
+
+{%- liquid
+  if product.selected_or_first_available_variant.featured_media
+    assign seo_media = product.selected_or_first_available_variant.featured_media
+  else
+    assign seo_media = product.featured_media
+  endif
+-%}
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ request.origin | append: product.url | json }},
+    {% if seo_media -%}
+      "image": [
+        {{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}
+      ],
+    {%- endif %}
+    "description": {{ product.description | strip_html | json }},
+    {% if product.selected_or_first_available_variant.sku != blank -%}
+      "sku": {{ product.selected_or_first_available_variant.sku | json }},
+    {%- endif %}
+    "brand": {
+      "@type": "Brand",
+      "name": {{ product.vendor | json }}
+    },
+    "offers": [
+      {%- for variant in product.variants -%}
+        {
+          "@type" : "Offer",
+          {%- if variant.sku != blank -%}
+            "sku": {{ variant.sku | json }},
+          {%- endif -%}
+          {%- if variant.barcode.size == 12 -%}
+            "gtin12": {{ variant.barcode }},
+          {%- endif -%}
+          {%- if variant.barcode.size == 13 -%}
+            "gtin13": {{ variant.barcode }},
+          {%- endif -%}
+          {%- if variant.barcode.size == 14 -%}
+            "gtin14": {{ variant.barcode }},
+          {%- endif -%}
+          "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price" : {{ variant.price | divided_by: 100.00 | json }},
+          "priceCurrency" : {{ cart.currency.iso_code | json }},
+          "url" : {{ request.origin | append: variant.url | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+</script>
+
+{% schema %}
+{
+  "name": "CC Card Product",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "cc_size_selector",
+      "name": "Size Selector",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "cc_delivery_promise",
+      "name": "Delivery Promise",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Promise Text",
+          "default": "Printed and posted within 24 hours"
+        }
+      ]
+    },
+    {
+      "type": "cc_personalize_cta",
+      "name": "Personalise Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Personalise"
+        }
+      ]
+    },
+    {
+      "type": "cc_add_blank_cta",
+      "name": "Add Blank Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Add blank"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_info",
+      "default": true,
+      "label": "Enable sticky product info"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "media_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "large",
+      "label": "Media size"
+    },
+    {
+      "type": "checkbox",
+      "id": "constrain_to_viewport",
+      "default": true,
+      "label": "Constrain media height to screen"
+    },
+    {
+      "type": "select",
+      "id": "media_fit",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "cover",
+          "label": "Cover"
+        }
+      ],
+      "default": "contain",
+      "label": "Media fit"
+    },
+    {
+      "type": "select",
+      "id": "gallery_layout",
+      "options": [
+        {
+          "value": "stacked",
+          "label": "Stacked"
+        },
+        {
+          "value": "thumbnail",
+          "label": "Thumbnail"
+        },
+        {
+          "value": "thumbnail_slider",
+          "label": "Thumbnail slider"
+        }
+      ],
+      "default": "stacked",
+      "label": "Gallery layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_thumbnails",
+      "options": [
+        {
+          "value": "columns",
+          "label": "Columns"
+        },
+        {
+          "value": "show",
+          "label": "Show"
+        },
+        {
+          "value": "hide",
+          "label": "Hide"
+        }
+      ],
+      "default": "hide",
+      "label": "Mobile thumbnails"
+    },
+    {
+      "type": "select",
+      "id": "media_position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Media position"
+    },
+    {
+      "type": "select",
+      "id": "image_zoom",
+      "options": [
+        {
+          "value": "lightbox",
+          "label": "Lightbox"
+        },
+        {
+          "value": "hover",
+          "label": "Hover"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "lightbox",
+      "label": "Image zoom"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_variants",
+      "default": false,
+      "label": "Hide variant selector"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_looping",
+      "default": false,
+      "label": "Enable video looping"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 12
+    }
+  ]
+}
+{% endschema %}

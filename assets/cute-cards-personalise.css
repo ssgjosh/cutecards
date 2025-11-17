@@ -1,0 +1,158 @@
+/**
+ * Cute Cards Personalization Styles
+ * Styling for front caption and inside message fields
+ */
+
+/* Fieldset container */
+.cc-fieldset {
+  margin-block: 1.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.cc-legend {
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+/* Individual field wrapper */
+.cc-field {
+  margin-block: 1.25rem;
+}
+
+.cc-field:first-child {
+  margin-block-start: 0;
+}
+
+/* Labels */
+.cc-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 1.4rem;
+  line-height: 1.3;
+}
+
+.cc-label .required {
+  color: rgb(var(--color-foreground));
+  margin-left: 0.2rem;
+}
+
+/* Input and Textarea */
+.cc-input,
+.cc-textarea {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+  border-radius: var(--inputs-radius-outset);
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  transition: border-color 0.1s ease;
+}
+
+.cc-input:focus,
+.cc-textarea:focus {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 0.1rem;
+  border-color: rgb(var(--color-foreground));
+}
+
+.cc-textarea {
+  resize: vertical;
+  min-height: 10rem;
+  font-family: inherit;
+}
+
+/* Help text */
+.cc-help {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+/* Character counter */
+.cc-counter {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  text-align: right;
+  color: rgba(var(--color-foreground), 0.6);
+  font-variant-numeric: tabular-nums;
+  min-height: 1.68rem; /* Reserve height: 1.2rem * 1.4 line-height - prevent CLS */
+}
+
+/* Error message */
+.cc-error {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgb(var(--color-background), 0.5);
+  border-left: 0.3rem solid rgb(218, 47, 47);
+  color: rgb(218, 47, 47);
+  font-size: 1.4rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.cc-error[hidden] {
+  display: none;
+}
+
+/* Truncate inside message in cart notification popup */
+.cc-message-preview {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: 4.5em; /* 3 lines × 1.5 line-height */
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 749px) {
+  .cc-label {
+    font-size: 1.3rem;
+  }
+
+  .cc-input,
+  .cc-textarea {
+    font-size: 1.6rem; /* Larger on mobile for better usability */
+  }
+
+  .cc-help,
+  .cc-counter {
+    font-size: 1.1rem;
+  }
+}
+
+/* Print styles - hide personalization fields */
+@media print {
+  .cc-fieldset {
+    display: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .cc-input,
+  .cc-textarea {
+    border-width: 0.2rem;
+  }
+
+  .cc-input:focus,
+  .cc-textarea:focus {
+    outline-width: 0.3rem;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .cc-input,
+  .cc-textarea {
+    transition: none;
+  }
+}

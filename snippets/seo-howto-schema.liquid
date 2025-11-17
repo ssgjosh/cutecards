@@ -1,0 +1,65 @@
+{% comment %}
+  HowTo Schema - Personalization Process
+
+  Outputs JSON-LD for HowTo type describing the card personalization process.
+  Include this snippet on product pages or dedicated "How It Works" section.
+
+  Usage:
+    {% render 'seo-howto-schema' %}
+
+  Features:
+    - Step-by-step personalization guide
+    - Appears in "How to" rich results
+    - Helps AI answer voice queries about customization
+    - Improves understanding of product capabilities
+{% endcomment %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Personalize Your Greeting Card",
+  "description": "Step-by-step guide to creating a personalized greeting card with custom message, fonts, and delivery options",
+  "image": "{{ 'personalization-guide.jpg' | asset_url | prepend: 'https:' }}",
+  "totalTime": "PT3M",
+  "estimatedCost": {
+    "@type": "MonetaryAmount",
+    "currency": {{ cart.currency.iso_code | json }},
+    "value": "0"
+  },
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Choose Your Card Size",
+      "text": "Select from our range of card sizes: classic 5x7 inches, square 7x7, or statement A4 size. Each size is available for the same price.",
+      "url": "{{ shop.url }}{{ product.url }}#size-selection",
+      "image": "{{ 'howto-step1-size.jpg' | asset_url | prepend: 'https:' }}"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Add Your Personal Message",
+      "text": "Type your heartfelt message up to 600 characters. Use our AI suggestion tool if you're stuck for words - it generates three message options (Brief & Sweet, Warm & Personal, or Heartfelt) based on the occasion and recipient.",
+      "url": "{{ shop.url }}{{ product.url }}#message-field",
+      "image": "{{ 'howto-step2-message.jpg' | asset_url | prepend: 'https:' }}"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Customize Your Typography",
+      "text": "Choose from 12 beautiful font families, 3 sizes (small, medium, large), and 6 color options to match your message style and the recipient's personality. Preview your card interior in real-time as you customize.",
+      "url": "{{ shop.url }}{{ product.url }}#typography-controls",
+      "image": "{{ 'howto-step3-fonts.jpg' | asset_url | prepend: 'https:' }}"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Choose Your Delivery Method",
+      "text": "Select 'Post to me' to receive the card yourself, or 'Send direct' to have us mail it straight to the recipient in a personalized envelope. Delivery takes 3-5 business days.",
+      "url": "{{ shop.url }}{{ product.url }}#delivery-options",
+      "image": "{{ 'howto-step4-delivery.jpg' | asset_url | prepend: 'https:' }}"
+    }
+  ]
+}
+</script>

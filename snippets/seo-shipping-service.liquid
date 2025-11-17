@@ -1,0 +1,61 @@
+{% comment %}
+  ShippingService Schema - 2025 Transactional Schema
+
+  Outputs JSON-LD for ShippingService type.
+  Include this as part of Organization schema or standalone on shipping pages.
+
+  New schema type launched November 2025.
+
+  Usage:
+    {% render 'seo-shipping-service' %}
+
+  Optional parameters:
+    shipping_country: ISO 3166-1 alpha-2 country code (default: 'GB')
+    min_days: Minimum delivery business days (default: 3)
+    max_days: Maximum delivery business days (default: 5)
+    shipping_rate: Cost in shop currency (default: 2.99)
+
+  Features:
+    - Detailed shipping costs and timeframes
+    - Helps Google display shipping information in results
+    - Transactional transparency for AI shopping recommendations
+{% endcomment %}
+
+{%- liquid
+  assign shipping_country = shipping_country | default: 'GB'
+  assign min_days = min_days | default: 3
+  assign max_days = max_days | default: 5
+  assign shipping_rate = shipping_rate | default: 2.99
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "OfferShippingDetails",
+  "@id": "{{ shop.url }}#shippingdetails",
+  "shippingRate": {
+    "@type": "MonetaryAmount",
+    "value": "{{ shipping_rate }}",
+    "currency": {{ cart.currency.iso_code | json }}
+  },
+  "shippingDestination": {
+    "@type": "DefinedRegion",
+    "addressCountry": {{ shipping_country | json }}
+  },
+  "deliveryTime": {
+    "@type": "ShippingDeliveryTime",
+    "handlingTime": {
+      "@type": "QuantitativeValue",
+      "minValue": 1,
+      "maxValue": 2,
+      "unitCode": "DAY"
+    },
+    "transitTime": {
+      "@type": "QuantitativeValue",
+      "minValue": {{ min_days }},
+      "maxValue": {{ max_days }},
+      "unitCode": "DAY"
+    }
+  }
+}
+</script>

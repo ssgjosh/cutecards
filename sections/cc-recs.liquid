@@ -1,0 +1,125 @@
+{{- 'cc-recs.css' | asset_url | stylesheet_tag -}}
+
+{%- comment -%}
+  Recommendation Rail Section
+
+  This section renders product recommendations based on handles passed via URL parameters.
+  Used for AJAX rendering in the modal recommendation rail.
+
+  Usage: /?section_id=cc-recs&handles=handle1,handle2,handle3
+{%- endcomment -%}
+
+{%- liquid
+  assign handles_param = ''
+
+  comment
+    Extract handles from URL query string
+    Note: request object access varies by Shopify plan
+  endcomment
+
+  if request.page_type == 'section'
+    assign url_parts = request.path | split: 'handles='
+    if url_parts.size > 1
+      assign handles_param = url_parts[1] | split: '&' | first
+    endif
+  endif
+
+  assign product_handles = handles_param | split: ','
+  assign has_products = false
+
+  for handle in product_handles
+    assign handle = handle | strip
+    if handle != blank
+      assign has_products = true
+      break
+    endif
+  endfor
+-%}
+
+{%- if has_products -%}
+  <div class="cc-recs" data-cc-recs-rail>
+    <ul class="cc-recs__list" role="list">
+      {%- for handle in product_handles -%}
+        {%- assign handle = handle | strip -%}
+        {%- if handle != blank -%}
+          {%- assign product = all_products[handle] -%}
+
+          {%- if product and product.available -%}
+            <li class="cc-recs__item">
+              <div class="cc-recs__card">
+                {%- comment -%} Product Image {%- endcomment -%}
+                <a
+                  href="{{ product.url }}"
+                  class="cc-recs__image-wrapper"
+                  data-cc-card
+                  data-cc-handle="{{ product.handle }}"
+                  data-cc-title="{{ product.title | escape }}"
+                >
+                  {%- if product.featured_image -%}
+                    <img
+                      srcset="
+                        {{ product.featured_image | image_url: width: 200 }} 200w,
+                        {{ product.featured_image | image_url: width: 400 }} 400w
+                      "
+                      src="{{ product.featured_image | image_url: width: 200 }}"
+                      sizes="200px"
+                      alt="{{ product.featured_image.alt | escape }}"
+                      class="cc-recs__image"
+                      loading="lazy"
+                      width="200"
+                      height="200"
+                    >
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'cc-recs__image cc-recs__image--placeholder' }}
+                  {%- endif -%}
+                </a>
+
+                {%- comment -%} Product Info {%- endcomment -%}
+                <div class="cc-recs__info">
+                  <h3 class="cc-recs__title">
+                    <a
+                      href="{{ product.url }}"
+                      data-cc-card
+                      data-cc-handle="{{ product.handle }}"
+                      data-cc-title="{{ product.title | escape }}"
+                    >
+                      {{ product.title }}
+                    </a>
+                  </h3>
+
+                  {%- comment -%} Price {%- endcomment -%}
+                  <div class="cc-recs__price">
+                    {%- if product.price_varies -%}
+                      <span class="cc-recs__price-text">
+                        From {{ product.price_min | money }}
+                      </span>
+                    {%- else -%}
+                      <span class="cc-recs__price-text">
+                        {{ product.price | money }}
+                      </span>
+                    {%- endif -%}
+                  </div>
+
+                  {%- comment -%} Personalise Button {%- endcomment -%}
+                  <button
+                    type="button"
+                    class="cc-recs__cta button button--small"
+                    data-cc-card
+                    data-cc-handle="{{ product.handle }}"
+                    data-cc-title="{{ product.title | escape }}"
+                  >
+                    Personalise
+                  </button>
+                </div>
+              </div>
+            </li>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+{%- else -%}
+  <div class="cc-recs cc-recs--empty" data-cc-recs-rail>
+    <p class="cc-recs__empty-message">No recommendations available</p>
+  </div>
+{%- endif -%}

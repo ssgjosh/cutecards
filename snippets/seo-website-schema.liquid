@@ -1,0 +1,39 @@
+{% comment %}
+  WebSite Schema with SearchAction - Centralized
+
+  Outputs JSON-LD for WebSite type with search functionality.
+  Include this snippet globally (typically in header or theme.liquid).
+  This should appear on ALL pages, not just homepage.
+
+  Usage:
+    {% render 'seo-website-schema' %}
+
+  Features:
+    - WebSite entity with @id reference
+    - SearchAction for site search functionality
+    - Links to Organization entity
+{% endcomment %}
+
+{%- assign potential_action_target = shop.url | append: routes.search_url | append: '?q={search_term_string}' -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "{{ shop.url }}#website",
+  "name": {{ shop.name | json }},
+  "url": {{ shop.url | json }},
+  "publisher": {
+    "@id": "{{ shop.url }}#organization"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": {{ potential_action_target | json }}
+    },
+    "query-input": "required name=search_term_string"
+  },
+  "inLanguage": {{ request.locale.iso_code | json }}
+}
+</script>

@@ -1,0 +1,283 @@
+/* ========================================
+   MOBILE RESPONSIVE (<750px)
+   ======================================== */
+
+@media screen and (max-width: 749px) {
+  .ccc {
+    padding: 2vh 0; /* Space at top/bottom for clicking backdrop */
+  }
+
+  .ccc__dialog {
+    width: 100%;
+    height: 96vh;
+    max-width: none;
+    max-height: 96vh;
+    border-radius: var(--brutal-radius); /* Small radius on mobile */
+    animation: dialogEnterMobile 0.4s var(--ease-out-expo) forwards;
+    overflow: hidden; /* Dialog doesn't scroll - body does */
+    display: flex;
+    flex-direction: column;
+  }
+
+  @keyframes dialogEnterMobile {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .ccc__body {
+    padding: 1.5rem; /* Reduced from 2rem for tighter layout */
+    padding-bottom: 0; /* Footer adds its own padding */
+    flex: 1;
+    overflow-y: auto; /* Body is the scroll container */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    min-height: 0; /* Allow flexbox to shrink properly */
+  }
+
+  .ccc__choice {
+    grid-template-columns: 1fr;
+    gap: 0; /* No gap - use margins instead for control */
+  }
+
+  /* Mobile: Reset title position to under image */
+  .ccc__product-preview {
+    display: block; /* Normal flow */
+  }
+
+  .ccc__product-image {
+    grid-column: auto;
+    grid-row: auto;
+    margin-bottom: 1rem; /* Tight spacing */
+  }
+
+  .ccc__product-title {
+    grid-column: auto;
+    grid-row: auto;
+    font-size: 2rem;
+    margin-bottom: 0.5rem; /* Tight spacing */
+  }
+
+  .ccc__options {
+    grid-column: auto;
+    grid-row: auto;
+    margin-top: 0; /* No top margin */
+  }
+
+  /* Mobile: Hide primary button in .ccc__actions, show in footer */
+  .ccc__actions .button--primary {
+    display: none; /* Hidden on mobile - shown in footer instead */
+  }
+
+  .ccc__actions {
+    margin-top: 1rem; /* Reduced spacing above actions */
+  }
+
+  .ccc__actions .button--secondary {
+    margin-bottom: 1rem; /* Reduced from 2rem */
+  }
+
+  /* Mobile: Hide submit button in form, show in footer */
+  .ccc__form .button--primary[type="submit"] {
+    display: none; /* Hidden on mobile - shown in footer instead */
+  }
+
+  /* Mobile sticky footer - NEW three-part structure */
+  .ccc__footer-mobile {
+    display: block; /* Show on mobile */
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem; /* Match body padding */
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); /* Support iPhone notch */
+    background: var(--brutal-white);
+    border-top: 1px solid rgba(26, 26, 26, 0.2);
+    z-index: 10;
+    flex-shrink: 0; /* Don't shrink in flex layout */
+  }
+
+  .ccc__footer-mobile .button {
+    width: 100%;
+    margin: 0;
+    border-radius: var(--brutal-radius);
+  }
+
+  .ccc__product-preview {
+    position: static;
+  }
+
+  .ccc__product-image {
+    border-radius: var(--brutal-radius);
+    max-height: 45vh;
+    aspect-ratio: auto;
+    object-fit: contain;
+    width: 100%;
+    /* margin-bottom set in mobile reset above (1rem) */
+  }
+
+  .ccc__sizes-heading {
+    font-size: 1.6rem;
+    margin-bottom: 1rem; /* Reduced from default */
+  }
+
+  .ccc__sizes {
+    margin-bottom: 1rem; /* Reduced from 2rem */
+  }
+
+  .ccc__size-option {
+    padding: 1.6rem 1.8rem; /* Ensure 44px minimum tap target */
+    margin-bottom: 1rem;
+    min-height: 44px; /* Accessibility - minimum tap target */
+  }
+
+  .ccc__size-option:last-child {
+    margin-bottom: 0;
+  }
+
+  .ccc__size-label {
+    font-size: 1.5rem;
+  }
+
+  .ccc__size-price {
+    font-size: 1.7rem;
+  }
+
+  .ccc__size-dimensions {
+    font-size: 1.2rem;
+  }
+
+  .ccc__size-badge {
+    font-size: 1.1rem;
+    padding: 0.3rem 0.7rem;
+  }
+
+  .ccc__actions .button {
+    font-size: 1.6rem;
+    padding: 1.6rem 2rem;
+    min-height: 56px; /* Generous tap target on mobile */
+  }
+
+  .ccc__close {
+    position: fixed; /* Fixed to viewport on mobile */
+    top: calc(2vh + 1.5rem); /* Account for modal padding */
+    right: 1.5rem;
+    width: 48px; /* Larger tap target - was 4rem */
+    height: 48px;
+    min-width: 44px; /* Ensure accessibility minimum */
+    min-height: 44px;
+  }
+
+  .ccc__delivery-promise {
+    font-size: 1.3rem;
+    padding: 0.8rem 1.2rem; /* Reduced padding */
+    margin-bottom: 1rem; /* Reduced from 2rem */
+  }
+
+  /* Ensure recommendation rail has space */
+  #cc-recs-container {
+    margin-bottom: 1rem; /* Reduced from 2rem */
+    margin-top: 1rem; /* Reduced spacing */
+  }
+
+  .ccc__message-ideas-toggle {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .ccc__message-idea {
+    font-size: 1.2rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .ccc__personaliser-header {
+    grid-template-columns: 120px 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .ccc__personaliser-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .ccc__personaliser-info {
+    padding-top: 0;
+  }
+
+  .ccc__personaliser-title {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .ccc__personaliser-variant {
+    font-size: 1.4rem;
+  }
+
+  /* Hide card caption on mobile - we already show header */
+  .ccc__card-caption {
+    display: none;
+  }
+
+  /* Tighten spacing between card and controls */
+  .ccc__controls-column {
+    margin-top: 1.5rem;
+  }
+
+  /* Increase card height to match desktop writing capacity */
+  .ccc__dialog--personalise .ccc__card-interior {
+    height: 420px;
+  }
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  .ccc__size-option {
+    border-width: 3px;
+  }
+
+  .ccc__size-option:has(input:checked) {
+    border-width: 4px;
+  }
+
+  .ccc__backdrop {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: none;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .ccc__backdrop {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* ========================================
+   PRINT (hide modal)
+   ======================================== */
+
+@media print {
+  .ccc {
+    display: none !important;
+  }
+}

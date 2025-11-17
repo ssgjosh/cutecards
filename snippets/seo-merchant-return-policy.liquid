@@ -1,0 +1,41 @@
+{% comment %}
+  MerchantReturnPolicy Schema - 2025 Transactional Schema
+
+  Outputs JSON-LD for MerchantReturnPolicy type.
+  Include this as part of Organization schema or standalone on policy pages.
+
+  IMPORTANT: returnPolicyCountry is REQUIRED as of March 2025.
+
+  Usage:
+    {% render 'seo-merchant-return-policy' %}
+
+  Optional parameters:
+    return_days: Number of days for returns (default: 30)
+    return_country: ISO 3166-1 alpha-2 country code (default: 'GB')
+
+  Features:
+    - Compliant with March 2025 requirements
+    - Transactional transparency for AI recommendations
+    - Can specify up to 50 countries
+{% endcomment %}
+
+{%- liquid
+  assign return_days = return_days | default: 30
+  assign return_country = return_country | default: 'GB'
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MerchantReturnPolicy",
+  "@id": "{{ shop.url }}#returnpolicy",
+  "name": "{{ shop.name }} Return Policy",
+  "returnPolicyCountry": {{ return_country | json }},
+  "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+  "merchantReturnDays": {{ return_days }},
+  "returnMethod": "https://schema.org/ReturnByMail",
+  "returnFees": "https://schema.org/FreeReturn",
+  "applicableCountry": {{ return_country | json }},
+  "url": "{{ shop.url }}/policies/refund-policy"
+}
+</script>
